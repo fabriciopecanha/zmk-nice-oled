@@ -61,38 +61,36 @@ void animation_smart_battery_off(lv_obj_t *canvas) {
 #endif
 
 static void draw_level(lv_obj_t *canvas, const struct status_state *state) {
-    lv_draw_label_dsc_t label_right_dsc;
+    lv_draw_label_dsc_t label_dsc;
 #if IS_ENABLED(CONFIG_NICE_EPAPER_ON)
-    init_label_dsc(&label_right_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_RIGHT);
-#else
-    init_label_dsc(&label_right_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_LEFT);
-#endif // CONFIG_NICE_EPAPER_ON
-
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_RIGHT);
     char text[10] = {};
-
-    sprintf(text, "%i%%", state->battery);
-    // x, y, width, dsc, text
-    lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 42, &label_right_dsc, text);
+    snprintf(text, sizeof(text), "%i%%", state->battery);
+    lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 42, &label_dsc, text);
+#else
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_12, LV_TEXT_ALIGN_CENTER);
+    char text[10] = {};
+    snprintf(text, sizeof(text), "%i%%", state->battery);
+    lv_canvas_draw_text(canvas, 0, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, CANVAS_WIDTH, &label_dsc, text);
+#endif // CONFIG_NICE_EPAPER_ON
 }
 
 static void draw_charging_level(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_img_dsc_t img_dsc;
     lv_draw_img_dsc_init(&img_dsc);
-    lv_draw_label_dsc_t label_right_dsc;
+    lv_draw_label_dsc_t label_dsc;
 #if IS_ENABLED(CONFIG_NICE_EPAPER_ON)
-    init_label_dsc(&label_right_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_RIGHT);
-#else
-    init_label_dsc(&label_right_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_LEFT);
-#endif // CONFIG_NICE_EPAPER_ON
-
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_RIGHT);
     char text[10] = {};
-
-    sprintf(text, "%i", state->battery);
-    lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 35, &label_right_dsc, text);
-#if IS_ENABLED(CONFIG_NICE_EPAPER_ON)
+    snprintf(text, sizeof(text), "%i", state->battery);
+    lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 35, &label_dsc, text);
     lv_canvas_draw_img(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X + 36, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y + 2, &bolt, &img_dsc);
 #else
-    lv_canvas_draw_img(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X + 25, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, &bolt, &img_dsc);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_12, LV_TEXT_ALIGN_LEFT);
+    char text[10] = {};
+    snprintf(text, sizeof(text), "%i", state->battery);
+    lv_canvas_draw_text(canvas, 3, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 20, &label_dsc, text);
+    lv_canvas_draw_img(canvas, 24, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y + 2, &bolt, &img_dsc);
 #endif // CONFIG_NICE_EPAPER_ON
 }
 

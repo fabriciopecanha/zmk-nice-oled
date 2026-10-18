@@ -512,13 +512,15 @@ static void draw_mods_status(lv_obj_t *canvas, const struct status_state *state)
 //  INICIO SECCIÓN LISTENER MODIFICADORES (NUEVA INTEGRACIÓN)
 #if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_MODIFIERS_INDICATORS_FIXED)
 
-// Función para actualizar el estado del widget (adaptada al patrón existente)
+// Función para actualizar el estado del widget (solo si el estado de los modificadores cambió)
 static void set_mods_status(struct zmk_widget_screen *widget,
-                            struct mods_status_state state /* No usada directamente */) {
+                            struct mods_status_state state) {
 #if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
-    // Obtiene el estado actual de los modificadores directamente
-    widget->state.mod_state = zmk_hid_get_explicit_mods();
-    // Vuelve a dibujar todo el canvas para reflejar el cambio
+    if (widget->state.mod_state == state.mods) {
+        return; // Sin cambios en los modificadores: no redibujar el canvas
+    }
+    widget->state.mod_state = state.mods;
+    // Vuelve a dibujar el canvas únicamente cuando el estado de los modificadores cambia
     draw_canvas(widget->obj, widget->cbuf, &widget->state);
 #endif
 }
@@ -526,7 +528,11 @@ static void set_mods_status(struct zmk_widget_screen *widget,
 // Callback que se llama cuando el estado necesita actualizarse
 static void mods_status_update_cb(struct mods_status_state state) {
     struct zmk_widget_screen *widget;
-    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_mods_status(widget, state); }
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        if (widget->state.mod_state != state.mods) {
+            set_mods_status(widget, state);
+        }
+    }
 }
 
 // Función para obtener el estado (requerida por el listener)
