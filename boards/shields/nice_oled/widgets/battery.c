@@ -68,7 +68,7 @@ static void draw_level(lv_obj_t *canvas, const struct status_state *state) {
     snprintf(text, sizeof(text), "%i%%", state->battery);
     lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 42, &label_dsc, text);
 #else
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_12, LV_TEXT_ALIGN_CENTER);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_CENTER);
     char text[10] = {};
     snprintf(text, sizeof(text), "%i%%", state->battery);
     lv_canvas_draw_text(canvas, 0, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, CANVAS_WIDTH, &label_dsc, text);
@@ -86,11 +86,11 @@ static void draw_charging_level(lv_obj_t *canvas, const struct status_state *sta
     lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 35, &label_dsc, text);
     lv_canvas_draw_img(canvas, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_X + 36, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y + 2, &bolt, &img_dsc);
 #else
-    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_12, LV_TEXT_ALIGN_LEFT);
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_16, LV_TEXT_ALIGN_LEFT);
     char text[10] = {};
     snprintf(text, sizeof(text), "%i", state->battery);
-    lv_canvas_draw_text(canvas, 3, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 20, &label_dsc, text);
-    lv_canvas_draw_img(canvas, 24, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y + 2, &bolt, &img_dsc);
+    lv_canvas_draw_text(canvas, 1, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y, 24, &label_dsc, text);
+    lv_canvas_draw_img(canvas, 26, CONFIG_NICE_OLED_WIDGET_BATTERY_CUSTOM_Y + 3, &bolt, &img_dsc);
 #endif // CONFIG_NICE_EPAPER_ON
 }
 

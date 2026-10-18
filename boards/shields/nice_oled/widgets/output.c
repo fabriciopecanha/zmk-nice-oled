@@ -87,8 +87,8 @@ void draw_output_status(lv_obj_t *canvas, const struct status_state *state) {
     }
 
     lv_draw_label_dsc_t link_label_dsc;
-    init_label_dsc(&link_label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_8, LV_TEXT_ALIGN_LEFT);
-    lv_canvas_draw_text(canvas, 18, CONFIG_NICE_OLED_WIDGET_OUTPUT_BT_CUSTOM_Y + 3, 14, &link_label_dsc,
+    init_label_dsc(&link_label_dsc, LVGL_FOREGROUND, &pixel_operator_mono_12, LV_TEXT_ALIGN_LEFT);
+    lv_canvas_draw_text(canvas, 16, CONFIG_NICE_OLED_WIDGET_OUTPUT_BT_CUSTOM_Y + 2, 16, &link_label_dsc,
                         state->connected ? "OK" : "--");
 #endif
 }
